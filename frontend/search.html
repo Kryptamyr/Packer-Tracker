@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packer Tracker - Search Orders</title>
+    <link rel="stylesheet" href="resources/styles/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Search Orders</h1>
+            <p>Find who packed an order</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('result') }}" method="post">
+            <div class="form-group">
+                <label for="order_number">📋 Order Number:</label>
+                <input type="text" id="order_number" name="order_number" required 
+                       placeholder="Enter order number to search">
+            </div>
+            
+            <button type="submit" class="submit-btn">🔍 Search Order</button>
+        </form>
+
+        <a href="{{ url_for('index') }}" class="nav-link">🏠 Back to Home</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packer Tracker - Record Order</title>
+    <link rel="stylesheet" href="resources/styles/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 Packer Tracker</h1>
+            <p>Record completed orders</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}" id="flash-{{ loop.index }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('submit') }}" method="post">
+            <div class="form-group">
+                <label for="packer_name">👤 Packer Name:</label>
+                <input type="text" id="packer_name" name="packer_name" required 
+                       placeholder="Enter packer's name">
+            </div>
+            
+            <div class="form-group">
+                <label for="order_number">📋 Order Number:</label>
+                <input type="text" id="order_number" name="order_number" required 
+                       placeholder="Enter order number">
+            </div>
+            
+            <button type="submit" class="submit-btn">✅ Record Order</button>
+        </form>
+
+        <a href="{{ url_for('search') }}" class="nav-link">🔍 Search Orders</a>
+    </div>
+
+    <script src="resources/scripts/index.js"></script>
+</body>
+</html>
