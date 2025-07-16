@@ -38,37 +38,6 @@ A modern, user-friendly web application for tracking which packer completed whic
 - 📊 **Data Persistence**: Automatic data saving to text file
 - 🛠️ **Easy Maintenance**: Simple text-based data storage
 
-## 📁 Project Structure
-
-```
-packer_app/
-├── backend/                    # Python/Flask backend
-│   ├── controllers/            # Business logic
-│   │   └── packer_controller.py
-│   ├── models/                 # Data operations
-│   │   └── database.py
-│   ├── startup.py              # Main Flask application
-│   ├── requirements.txt        # Python dependencies
-│   └── build_exe_console.py    # Build script
-├── frontend/                   # HTML/CSS/JS frontend
-│   ├── resources/
-│   │   ├── scripts/
-│   │   │   └── index.js        # Main JavaScript
-│   │   └── styles/
-│   │       ├── index.css       # Main styles
-│   │       └── result.css      # Results page styles
-│   ├── index.html              # Main page
-│   ├── search.html             # Search page
-│   └── result.html             # Results page
-├── dist/                       # Distribution files
-│   ├── PackerTracker_Console.exe
-│   └── Launch_PackerTracker_Console.bat
-├── build.bat                   # Build script
-├── run.bat                     # Development launcher
-├── README.md                   # This file
-└── DEPLOYMENT.md               # Deployment guide
-```
-
 ## 🛠️ Development
 
 ### Prerequisites
