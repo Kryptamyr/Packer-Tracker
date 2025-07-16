@@ -10,9 +10,14 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from controllers.packer_controller import PackerController
 
-app = Flask(__name__, 
-           template_folder='../frontend',
-           static_folder='../frontend/resources')
+if hasattr(sys, '_MEIPASS'):
+    base_path = sys._MEIPASS # type: ignore
+else:
+    base_path = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__,
+            template_folder=os.path.join(base_path, 'frontend'),
+            static_folder=os.path.join(base_path, 'frontend', 'resources'))
 app.secret_key = 'your-secret-key-here'  # Required for flash messages
 
 # Initialize controller
