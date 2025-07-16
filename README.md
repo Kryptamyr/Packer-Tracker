@@ -1,4 +1,4 @@
-# 📦 Packer Tracker v0.0.1
+# 📦 Packer Tracker v0.1.0
 
 A modern, user-friendly web application for tracking which packer completed which orders. Built with Python/Flask backend and clean HTML/CSS/JS frontend.
 
