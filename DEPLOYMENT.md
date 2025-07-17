@@ -1,4 +1,4 @@
-# 📦 Packer Tracker v1.1- Deployment Guide
+# 📦 Packer Tracker v1.1.0 - Deployment Guide
 
 ## 🎯 For Packing Station Workers
 
@@ -12,8 +12,8 @@
 #### 📝 Recording an Order
 1. **Enter your name** in the "Packer Name field (cannot be empty)
 2. **Enter the order number** in the "Order Number" field (must be exactly 6 digits)
-3. **Click "Record Order"**
-4 **Wait for the green success message** - you're done!
+3. **Click "Record Order"**after filling out fields
+4. **Wait for the green success message** - you're done!
 
 #### 📋 Viewing & Searching Orders
 1. **Click View Orders** at the bottom
@@ -25,7 +25,7 @@
 ### Tips for Packers
 - ✅ **Use your real name** - this helps track your work
 - ✅ **Double-check order numbers** - typos can cause issues
-- ✅ **Order number must be6igits**
+- ✅ **Order number must be 6 digits** - prevents tracking problems
 - ✅ **Keep the app running** - don't close the console window
 - ✅ **Data saves to network** - accessible from any computer
 - ✅ **Ask for help** if something doesn't work
@@ -36,9 +36,11 @@
 - Close other applications
 - Restart your computer if needed
 
-**❌ Browser doesnt open**
+**❌ Browser doesn't open**
 - Wait a few seconds
-- Or manually go to: `http://localhost:5000 Cant save orders**
+- Or manually go to: `http://localhost:5000 
+
+**❌ Cant save orders**
 - Check network connection to Compliance storage
 - Contact Supervisor if network access is down
 - Try putting the app on your Desktop temporarily
@@ -50,8 +52,9 @@
 ### Installing on Packing Stations
 
 #### Single Station Setup
-1. **Create shortcut** on desktop pointing to `\\Compliance\PackerTracker\PackerTracker_Console.exe`2t it** by clicking the shortcut
-3erify** data saves to network location
+1. **Create shortcut** on desktop pointing to `\\Compliance\PackerTracker\PackerTracker_Console.exe`
+2. **Test it** by clicking the shortcut
+3. **Verify** data saves to network location
 
 #### Multiple Station Setup
 1. **Create shortcuts** on each station pointing to the network executable
@@ -116,13 +119,14 @@
 
 #### ❌ App Won't Start
 **Check:**
-- Port 500 available
+- Port 5000 available
 - Antivirus blocking
 - File permissions
 - Network access
 
 **Solutions:**
-- Close other applications using port 50- Add to antivirus exclusions
+- Close other applications using port 5000
+- Add to antivirus exclusions
 - Run as administrator
 - Check network connectivity
 
