@@ -1,47 +1,33 @@
-# 📦 Packer Tracker v1.1.0 - Deployment Guide
+# 📦 Packer Tracker v1.1- Deployment Guide
 
 ## 🎯 For Packing Station Workers
 
 ### Quick Start (5 minutes)
-1. **Get the app**: Ask your supervisor for `PackerTracker_Console.exe`
-2. **Save it**: Put it anywhere on your computer (Desktop is fine)
-3. **Run it**: Double-click the file
-4. **Start working**: Browser opens automatically - you're ready!
-
-### What You'll See
-When you double-click the app:
-```
-🚀 Starting Packer Tracker...
-📦 Application will open in your browser automatically
-🔄 Keep this window open while using the application
-❌ Close this window to stop the application
---------------------------------------------------
- * Running on http://localhost:5000
-```
-
-**Keep this window open while working!** Close it when you're done.
+1. **Access the app**: Use the desktop/taskbar shortcut provided by your supervisor
+2. **Run it**: Click the shortcut - browser opens automatically
+3. **Start working**: Begin tracking orders - data saves to network storage
 
 ### How to Use the App
 
 #### 📝 Recording an Order
-1. **Enter your name** in the "Packer Name" field (cannot be empty)
+1. **Enter your name** in the "Packer Name field (cannot be empty)
 2. **Enter the order number** in the "Order Number" field (must be exactly 6 digits)
 3. **Click "Record Order"**
-4. **See the green success message** - you're done!
+4 **Wait for the green success message** - you're done!
 
 #### 📋 Viewing & Searching Orders
-1. **Click "View Orders"** at the bottom
+1. **Click View Orders** at the bottom
 2. **Use the search box** to find an order by number
 3. **Filter by packer name** using the dropdown
 4. **Filter by date range** using the start/end date pickers
 5. **See all recorded orders** in a table format
-6. **View packer names, order numbers, and timestamps** for all entries
 
 ### Tips for Packers
 - ✅ **Use your real name** - this helps track your work
 - ✅ **Double-check order numbers** - typos can cause issues
-- ✅ **Order number must be 6 digits**
+- ✅ **Order number must be6igits**
 - ✅ **Keep the app running** - don't close the console window
+- ✅ **Data saves to network** - accessible from any computer
 - ✅ **Ask for help** if something doesn't work
 
 ### Common Issues & Solutions
@@ -50,13 +36,12 @@ When you double-click the app:
 - Close other applications
 - Restart your computer if needed
 
-**❌ Browser doesn't open**
+**❌ Browser doesnt open**
 - Wait a few seconds
-- Or manually go to: `http://localhost:5000`
-
-**❌ Can't save orders**
-- Make sure you're not in a restricted folder
-- Try putting the app on your Desktop
+- Or manually go to: `http://localhost:5000 Cant save orders**
+- Check network connection to Compliance storage
+- Contact Supervisor if network access is down
+- Try putting the app on your Desktop temporarily
 
 ---
 
@@ -65,63 +50,31 @@ When you double-click the app:
 ### Installing on Packing Stations
 
 #### Single Station Setup
-1. **Copy** `PackerTracker_Console.exe` to the packing station
-2. **Place it** in a folder (e.g., `C:\PackerTracker\`)
-3. **Test it** by double-clicking
-4. **Create shortcut** on Desktop for easy access
+1. **Create shortcut** on desktop pointing to `\\Compliance\PackerTracker\PackerTracker_Console.exe`2t it** by clicking the shortcut
+3erify** data saves to network location
 
 #### Multiple Station Setup
-1. **Copy executable** to each station
-2. **Each station** will have its own data file
-3. **No network setup** required
-4. **Independent operation** per station
-
-### Data Management
-
-#### 📊 Understanding the Data File
-Data is stored in `packer_data.json` in the same folder as the executable:
-```json
-{
-  "John Smith": [
-    {"order": "123456", "timestamp": "2025-07-17T08:15:23"},
-    {"order": "654321", "timestamp": "2025-07-17T09:02:11"}
-  ],
-  "Jane Doe": [
-    {"order": "777777", "timestamp": "2025-07-17T08:17:45"}
-  ]
-}
-```
-- **Each packer appears only once, with a list of their orders and timestamps.**
-- **Duplicate order numbers are not allowed.**
+1. **Create shortcuts** on each station pointing to the network executable
+2. **All stations** share the same data file on network storage
+3. **Real-time access** - changes visible immediately across all stations
+4. **Centralized management** - single location for updates and maintenance
 
 #### 📁 File Locations
+- **Network Path**: `\\Compliance\PackerTracker\`
 - **Executable**: `PackerTracker_Console.exe`
 - **Data file**: `packer_data.json` (created automatically)
 - **Backups**: `backups/` folder (auto-created, contains periodic backups)
-- **Both files** are in the same folder
 
 #### 🔄 Data Operations
 
 **Backup Data:**
-- Backups are created automatically every 50 orders or every 4 hours.
-- Backups are stored in the `backups/` folder as `packer_data_backup_YYYYMMDD_HHMMSS.json`.
-- Only the last 10 backups are kept.
-- You can manually copy a backup file for extra safety.
-
-**Move to New Location:**
-```bash
-# Copy both files together
-copy PackerTracker_Console.exe new_location\
-copy packer_data.json new_location\
-copy /Y backups\* new_location\backups\
-```
-
-**Merge Data from Multiple Stations:**
-- Open both `packer_data.json` files in a text editor or use a script to merge by packer name and order.
-- Ensure no duplicate order numbers.
+- Backups are created automatically every 50 orders or every4ours
+- Backups are stored in the `backups/` folder as `packer_data_backup_YYYYMMDD_HHMMSS.json`
+- Only the last 10 backups are kept
+- You can manually copy a backup file for extra safety
 
 **View Data in Excel:**
-1. Open `packer_data.json` in Notepad
+1. Open `\\Compliance\PackerTracker\packer_data.json` in Notepad
 2. Copy all content
 3. Paste into Excel (or use a JSON-to-CSV converter)
 4. Use Excel's features to analyze data
@@ -130,118 +83,65 @@ copy /Y backups\* new_location\backups\
 
 #### 📈 Daily Checks
 - **Verify app is running** on all stations
-- **Check data file size** (should grow daily)
-- **Backup data** at end of shift (optional, auto-backup is enabled)
+- **Check network connectivity** to Compliance storage
+- **Monitor data file size** (should grow daily)
+- **Check backup folder** for recent backups
 
 #### 📊 Weekly Tasks
 - **Review data** for accuracy
-- **Backup all data files**
-- **Check for duplicate entries** (should not occur)
+- **Check network folder permissions**
 - **Monitor packer performance**
+- **Verify all stations can access data**
 
 #### 🛠️ Monthly Maintenance
 - **Update executable** if new version available
-- **Archive old data** if needed
 - **Review packer statistics**
-- **Clean up old backups**
+- **Clean up old backups** (if needed)
+- **Test network connectivity** from all stations
 
 ### Troubleshooting for Administrators
 
-#### ❌ App Won't Start
+#### ❌ Network Access Issues
 **Check:**
-- Port 5000 available
-- Antivirus blocking
-- File permissions
-- Windows firewall
+- Network connectivity to `\\Compliance\`
+- User permissions on PackerTracker folder
+- Network drive mapping
+- Firewall settings
 
 **Solutions:**
-- Close other applications using port 5000
-- Add to antivirus exclusions
+- Verify network path is accessible
+- Check folder permissions (read/write for all users)
+- Map network drive if needed
+- Contact network administrator
+
+#### ❌ App Won't Start
+**Check:**
+- Port 500 available
+- Antivirus blocking
+- File permissions
+- Network access
+
+**Solutions:**
+- Close other applications using port 50- Add to antivirus exclusions
 - Run as administrator
-- Check Windows firewall settings
+- Check network connectivity
 
 #### ❌ Data Not Saving
 **Check:**
-- Folder write permissions
-- Disk space available
+- Network folder write permissions
+- Network connection stability
+- Disk space on network storage
 - Antivirus blocking file creation
 
 **Solutions:**
-- Move to folder with write permissions
-- Free up disk space
+- Verify network folder permissions
+- Check network connection
+- Free up disk space on network storage
 - Add folder to antivirus exclusions
 
-#### ❌ Multiple Users Can't Use Same Station
+#### ❌ Multiple Users Can't Access Simultaneously
 **Solution:**
-- Each station should have its own executable
-- Data files are independent per station
-- No sharing needed for basic operation
-
-### Advanced Configuration
-
-#### 🔧 Custom Data Location
-To store data in a different location:
-1. **Create folder** (e.g., `C:\PackerData\`)
-2. **Copy executable** there
-3. **Data file** will be created in that folder
-
-#### 📊 Data Analysis
-**Simple Analysis with Excel:**
-1. Open `packer_data.json` in Excel (or convert to CSV)
-2. Analyze by packer, order, or date
-3. Create pivot tables for:
-   - Orders per packer
-   - Orders per day
-   - Packing speed analysis
-
-**Command Line Analysis:**
-- Use a JSON tool or script to analyze `packer_data.json`
-
-### Security Considerations
-
-#### 🔒 Data Protection
-- **Local storage only** - no network access
-- **JSON format** - easily readable
-- **No encryption** - suitable for trusted environments
-- **Regular backups** recommended (auto-backup enabled)
-
-#### 🛡️ Best Practices
-- **Use on trusted computers only**
-- **Regular data backups**
-- **Monitor for unusual activity**
-- **Keep executables updated**
-
-### Support & Training
-
-#### 📚 Training Packers
-1. **Show them the app** - 5 minute demo
-2. **Explain the process** - record, search, filter
-3. **Practice with test data**
-4. **Provide written instructions**
-
-#### 🆘 Getting Help
-- **Check this guide first**
-- **Review common issues above**
-- **Contact IT support** for technical problems
-- **Keep backup of data** before making changes
-
----
-
-## 📞 Quick Reference
-
-### For Packers
-- **Start**: Double-click `PackerTracker_Console.exe`
-- **Record**: Name + 6-digit Order Number → "Record Order"
-- **View/Filter/Search**: Click "View Orders" → Use search/filter controls
-- **Stop**: Close the console window
-
-### For Administrators
-- **Install**: Copy executable to station
-- **Monitor**: Check `packer_data.json` file
-- **Backup**: Use auto-backup or copy backup files from `backups/`
-- **Update**: Replace executable when needed
-
-### File Locations
-- **App**: `PackerTracker_Console.exe`
-- **Data**: `packer_data.json` (same folder)
-- **Backups**: `backups/` folder (auto-created) 
+- This is normal and expected
+- Thread-safe operations prevent data corruption
+- Each user gets their own browser session
+- All changes are immediately visible to other users
