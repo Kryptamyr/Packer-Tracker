@@ -1,4 +1,4 @@
-# 📦 Packer Tracker v1.0.0
+# 📦 Packer Tracker v1.1.0
 
 A modern, user-friendly web application for tracking which packer completed which orders. Built with Python/Flask backend and clean HTML/CSS/JS frontend.
 
@@ -119,7 +119,32 @@ Data is now stored in `packer_data.json`:
 
 **Each packer name appears only once, with a list of their orders and timestamps.**
 
-## 🔧 Configuration
+## 📋 Version History
 
-### Environment Variables
-- `
+### v1.1urrent)
+- **Search & Filter**: Added search by order number, filter by packer name, and date range filtering
+- **Data Validation**: Enhanced validation for packer names (non-empty) and order numbers (exactly 6digits)
+- **Auto-Backup**: Automatic backup system that creates backups every 50 orders or 4 hours
+- **Version Display**: Added version number display in bottom-right corner of all pages
+- **Enhanced UI**: Improved search and filter controls with responsive design
+
+### v1.0.0 **JSON Storage**: Migrated from text format to structured JSON with packer-based organization
+- **Thread-Safe Operations**: Atomic file operations prevent data corruption in multi-user scenarios
+- **Auto-Migration**: Automatic migration from old text format to new JSON format
+- **Enhanced Data Structure**: Each packer appears once with a list of their orders
+
+### v0.20- **New Feature**: Changed from search functionality to comprehensive order viewing
+- **UI Update**: Replaced search form with tabular display of all orders
+- **Enhanced UX**: Users can now see complete order history at a glance
+- **Improved Layout**: Wider container and responsive table design
+- **Better Navigation**: Updated link text from Search Orders" to View Orders
+
+###v0.1.0
+- **Initial Release**: Basic order recording and search functionality
+- **Core Features**: Record orders, search by order number, duplicate prevention
+- **Modern UI**: Clean, responsive design with gradient styling
+- **Standalone Executable**: Easy deployment with PyInstaller
+
+---
+
+**Built with ❤️ for efficient order tracking**

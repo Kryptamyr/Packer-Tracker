@@ -37,6 +37,20 @@ def submit():
     packer_name = request.form.get('packer_name', '').strip()
     order_number = request.form.get('order_number', '').strip()
     
+    # Enhanced validation
+    if not packer_name:
+        flash('Please enter a packer name.', 'error')
+        return redirect(url_for('index'))
+    
+    if not order_number:
+        flash('Please enter an order number.', 'error')
+        return redirect(url_for('index'))
+    
+    # Validate order number is 6 digits
+    if not order_number.isdigit() or len(order_number) != 6:
+        flash('Order number must be exactly 6 digits.', 'error')
+        return redirect(url_for('index'))
+    
     success = packer_controller.submit_order(packer_name, order_number)
     
     if success:
@@ -47,7 +61,8 @@ def submit():
 @app.route('/orders')
 def orders():
     orders = packer_controller.get_all_orders()
-    return render_template('orders.html', orders=orders)
+    packers = packer_controller.get_packer_names()
+    return render_template('orders.html', orders=orders, packers=packers)
 
 if __name__ == '__main__':
     # Start browser in a separate thread

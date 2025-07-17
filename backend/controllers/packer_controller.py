@@ -80,3 +80,8 @@ class PackerController:
     def get_packer_statistics(self):
         """Get statistics for all packers"""
         return self.db.get_packer_statistics() 
+    
+    def get_packer_names(self):
+        """Get a list of all packer names"""
+        stats = self.get_packer_statistics()
+        return sorted(stats.keys()) 

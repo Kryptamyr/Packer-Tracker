@@ -1,7 +1,8 @@
 import os
 import json
 import tempfile
-from datetime import datetime
+import shutil
+from datetime import datetime, timedelta
 from threading import Lock
 
 class PackerDatabase:
@@ -10,7 +11,119 @@ class PackerDatabase:
     def __init__(self, data_file='packer_data.json'):
         self.data_file = data_file
         self.lock = Lock()  # Thread safety lock
+        self.backup_config = {
+            'backup_every_orders': 50,  # Backup every 50 orders
+            'backup_every_hours': 4,    # Backup every 4 hours
+            'max_backups': 10       # Keep last 10 backups
+        }
+        self.order_count = 0
+        self.last_backup_time = None
         self.ensure_data_file()
+        self._load_backup_state()
+    
+    def _load_backup_state(self):
+        """Load backup state from file if exists"""
+        backup_state_file = f"{self.data_file}.backup_state"
+        try:
+            if os.path.exists(backup_state_file):
+                with open(backup_state_file, 'r') as f:
+                    state = json.load(f)
+                    self.order_count = state.get('order_count', 0)
+                    last_backup = state.get('last_backup_time')
+                    if last_backup:
+                        self.last_backup_time = datetime.fromisoformat(last_backup)
+        except Exception:
+            # If backup state file is corrupted, start fresh
+            self.order_count = 0
+            self.last_backup_time = None
+    
+    def _save_backup_state(self):
+        """Save backup state to file"""
+        backup_state_file = f"{self.data_file}.backup_state"
+        state = {
+            'order_count': self.order_count,
+            'last_backup_time': self.last_backup_time.isoformat() if self.last_backup_time else None
+        }
+        try:
+            with open(backup_state_file, 'w') as f:
+                json.dump(state, f)
+        except Exception as e:
+            print(f"Warning: Could not save backup state: {e}")
+    
+    def _should_create_backup(self):
+        """Check if backup should be created based on config"""
+        now = datetime.now()
+        
+        # Check order count
+        if self.order_count >= self.backup_config['backup_every_orders']:
+            return True
+        
+        # Check time interval
+        if self.last_backup_time:
+            time_diff = now - self.last_backup_time
+            if time_diff >= timedelta(hours=self.backup_config['backup_every_hours']):
+                return True
+        
+        return False
+    
+    def _create_backup(self):
+        """Create a backup of the current data file"""
+        if not os.path.exists(self.data_file):
+            return
+        
+        try:
+            # Create backup filename with timestamp
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            backup_dir = 'backups'
+            if not os.path.exists(backup_dir):
+                os.makedirs(backup_dir)
+            
+            backup_file = os.path.join(backup_dir, f'packer_data_backup_{timestamp}.json')
+            
+            # Copy current file to backup
+            shutil.copy2(self.data_file, backup_file)
+            
+            # Update backup state
+            self.order_count = 0
+            self.last_backup_time = datetime.now()
+            self._save_backup_state()
+            
+            # Clean up old backups
+            self._cleanup_old_backups()
+            
+            print(f"✅ Backup created: {backup_file}")
+            
+        except Exception as e:
+            print(f"❌ Backup failed: {e}")
+    
+    def _cleanup_old_backups(self):
+        """Keep only the most recent backups"""
+        backup_dir = 'backups'
+        if not os.path.exists(backup_dir):
+            return
+        
+        try:
+            # Get all backup files
+            backup_files = []
+            for file in os.listdir(backup_dir):
+                if file.startswith('packer_data_backup_') and file.endswith('.json'):
+                    file_path = os.path.join(backup_dir, file)
+                    backup_files.append((file_path, os.path.getmtime(file_path)))
+            
+            # Sort by modification time (newest first)
+            backup_files.sort(key=lambda x: x[1], reverse=True)
+            
+            # Remove old backups
+            if len(backup_files) > self.backup_config['max_backups']:
+                for file_path, _ in backup_files[self.backup_config['max_backups']:]:
+                    try:
+                        os.remove(file_path)
+                        print(f"🗑️ Removed old backup: {file_path}")
+                    except Exception as e:
+                        print(f"Warning: Could not remove old backup {file_path}: {e}")
+                        
+        except Exception as e:
+            print(f"Warning: Could not cleanup old backups: {e}")
     
     def ensure_data_file(self):
         """Ensure the data file exists with proper JSON structure"""
@@ -58,7 +171,7 @@ class PackerDatabase:
             return {}
     
     def save_packer_data(self, packer_name, order_number):
-        """Save packer data to JSON file with thread safety"""
+        """Save packer data to JSON file with thread safety and auto-backup"""
         timestamp = datetime.now().isoformat()
         
         # Load current data
@@ -78,6 +191,13 @@ class PackerDatabase:
         
         # Atomic write back to file
         self._atomic_write(data)
+        
+        # Update order count and check for backup
+        self.order_count += 1
+        if self._should_create_backup():
+            self._create_backup()
+        else:
+            self._save_backup_state()
     
     def load_packer_data(self):
         """Load all packer data from JSON file in flat format for compatibility"""

@@ -23,9 +23,44 @@
             {% endif %}
         {% endwith %}
 
+        <!-- Search and Filter Controls -->
+        <div class="search-filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="order-search">🔍 Search Order:</label>
+                    <input type="text" id="order-search" placeholder="Enter order number...">
+                </div>
+                <div class="filter-group">
+                    <label for="packer-filter">👤 Filter Packer:</label>
+                    <select id="packer-filter">
+                        <option value="">All Packers</option>
+                        {% for packer in packers %}
+                        <option value="{{ packer }}">{{ packer }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="date-start">📅 Start Date:</label>
+                    <input type="date" id="date-start">
+                </div>
+                <div class="filter-group">
+                    <label for="date-end">📅 End Date:</label>
+                    <input type="date" id="date-end">
+                </div>
+                <div class="filter-group">
+                    <button id="clear-filters" class="clear-btn">🗑️ Clear Filters</button>
+                </div>
+            </div>
+        </div>
+
         <div class="orders-table-container">
             {% if orders %}
-                <table class="orders-table">
+                <div class="results-info">
+                    <span id="results-count">Showing {{ orders|length }} orders</span>
+                </div>
+                <table class="orders-table" id="orders-table">
                     <thead>
                         <tr>
                             <th>👤 Packer Name</th>
@@ -35,7 +70,7 @@
                     </thead>
                     <tbody>
                         {% for order in orders %}
-                        <tr>
+                        <tr data-packer="{{ order.packer_name }}" data-order="{{ order.order_number }}" data-date="{{ order.timestamp[:10] }}">
                             <td>{{ order.packer_name }}</td>
                             <td>{{ order.order_number }}</td>
                             <td>{{ order.timestamp }}</td>
@@ -52,6 +87,11 @@
         </div>
 
         <a href="{{ url_for('index') }}" class="nav-link">🏠 Back to Home</a>
+        
+        <!-- Version Display -->
+        <div class="version-display">v1.1.0</div>
     </div>
+
+    <script src="resources/scripts/orders.js"></script>
 </body>
 </html>
