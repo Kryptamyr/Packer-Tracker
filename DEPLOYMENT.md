@@ -1,4 +1,4 @@
-# 📦 Packer Tracker - Deployment Guide
+# 📦 Packer Tracker v1.1.0 - Deployment Guide
 
 ## 🎯 For Packing Station Workers
 
@@ -24,19 +24,23 @@ When you double-click the app:
 ### How to Use the App
 
 #### 📝 Recording an Order
-1. **Enter your name** in the "Packer Name" field
-2. **Enter the order number** in the "Order Number" field
+1. **Enter your name** in the "Packer Name" field (cannot be empty)
+2. **Enter the order number** in the "Order Number" field (must be exactly 6 digits)
 3. **Click "Record Order"**
 4. **See the green success message** - you're done!
 
-#### 📋 Viewing All Orders
+#### 📋 Viewing & Searching Orders
 1. **Click "View Orders"** at the bottom
-2. **See all recorded orders** in a table format
-3. **View packer names, order numbers, and timestamps** for all entries
+2. **Use the search box** to find an order by number
+3. **Filter by packer name** using the dropdown
+4. **Filter by date range** using the start/end date pickers
+5. **See all recorded orders** in a table format
+6. **View packer names, order numbers, and timestamps** for all entries
 
 ### Tips for Packers
 - ✅ **Use your real name** - this helps track your work
 - ✅ **Double-check order numbers** - typos can cause issues
+- ✅ **Order number must be 6 digits**
 - ✅ **Keep the app running** - don't close the console window
 - ✅ **Ask for help** if something doesn't work
 
@@ -75,61 +79,64 @@ When you double-click the app:
 ### Data Management
 
 #### 📊 Understanding the Data File
-Data is stored in `packer_data.txt` in the same folder as the executable:
+Data is stored in `packer_data.json` in the same folder as the executable:
+```json
+{
+  "John Smith": [
+    {"order": "123456", "timestamp": "2025-07-17T08:15:23"},
+    {"order": "654321", "timestamp": "2025-07-17T09:02:11"}
+  ],
+  "Jane Doe": [
+    {"order": "777777", "timestamp": "2025-07-17T08:17:45"}
+  ]
+}
 ```
-packer_name|order_number|timestamp
-```
-
-**Example data:**
-```
-John Smith|ORD-12345|2024-01-15 14:30:25
-Jane Doe|ORD-12346|2024-01-15 14:35:10
-Mike Johnson|ORD-12347|2024-01-15 14:40:15
-```
+- **Each packer appears only once, with a list of their orders and timestamps.**
+- **Duplicate order numbers are not allowed.**
 
 #### 📁 File Locations
 - **Executable**: `PackerTracker_Console.exe`
-- **Data file**: `packer_data.txt` (created automatically)
+- **Data file**: `packer_data.json` (created automatically)
+- **Backups**: `backups/` folder (auto-created, contains periodic backups)
 - **Both files** are in the same folder
 
 #### 🔄 Data Operations
 
 **Backup Data:**
-```bash
-# Copy the data file to backup location
-copy packer_data.txt backup_packer_data_2024-01-15.txt
-```
+- Backups are created automatically every 50 orders or every 4 hours.
+- Backups are stored in the `backups/` folder as `packer_data_backup_YYYYMMDD_HHMMSS.json`.
+- Only the last 10 backups are kept.
+- You can manually copy a backup file for extra safety.
 
 **Move to New Location:**
 ```bash
 # Copy both files together
 copy PackerTracker_Console.exe new_location\
-copy packer_data.txt new_location\
+copy packer_data.json new_location\
+copy /Y backups\* new_location\backups\
 ```
 
 **Merge Data from Multiple Stations:**
-```bash
-# Combine data files (use text editor)
-# Copy all lines from station2_data.txt to main_data.txt
-```
+- Open both `packer_data.json` files in a text editor or use a script to merge by packer name and order.
+- Ensure no duplicate order numbers.
 
 **View Data in Excel:**
-1. Open `packer_data.txt` in Notepad
+1. Open `packer_data.json` in Notepad
 2. Copy all content
-3. Paste into Excel
-4. Use "Text to Columns" with "|" as delimiter
+3. Paste into Excel (or use a JSON-to-CSV converter)
+4. Use Excel's features to analyze data
 
 ### Monitoring & Maintenance
 
 #### 📈 Daily Checks
 - **Verify app is running** on all stations
 - **Check data file size** (should grow daily)
-- **Backup data** at end of shift
+- **Backup data** at end of shift (optional, auto-backup is enabled)
 
 #### 📊 Weekly Tasks
 - **Review data** for accuracy
 - **Backup all data files**
-- **Check for duplicate entries**
+- **Check for duplicate entries** (should not occur)
 - **Monitor packer performance**
 
 #### 🛠️ Monthly Maintenance
@@ -180,32 +187,23 @@ To store data in a different location:
 
 #### 📊 Data Analysis
 **Simple Analysis with Excel:**
-1. Open `packer_data.txt` in Excel
-2. Split columns by "|" delimiter
+1. Open `packer_data.json` in Excel (or convert to CSV)
+2. Analyze by packer, order, or date
 3. Create pivot tables for:
    - Orders per packer
    - Orders per day
    - Packing speed analysis
 
 **Command Line Analysis:**
-```bash
-# Count total orders
-find /c "|" packer_data.txt
-
-# Find orders by specific packer
-findstr "John Smith" packer_data.txt
-
-# Find orders from today
-findstr "2024-01-15" packer_data.txt
-```
+- Use a JSON tool or script to analyze `packer_data.json`
 
 ### Security Considerations
 
 #### 🔒 Data Protection
 - **Local storage only** - no network access
-- **Plain text format** - easily readable
+- **JSON format** - easily readable
 - **No encryption** - suitable for trusted environments
-- **Regular backups** recommended
+- **Regular backups** recommended (auto-backup enabled)
 
 #### 🛡️ Best Practices
 - **Use on trusted computers only**
@@ -217,7 +215,7 @@ findstr "2024-01-15" packer_data.txt
 
 #### 📚 Training Packers
 1. **Show them the app** - 5 minute demo
-2. **Explain the process** - record then search
+2. **Explain the process** - record, search, filter
 3. **Practice with test data**
 4. **Provide written instructions**
 
@@ -233,21 +231,17 @@ findstr "2024-01-15" packer_data.txt
 
 ### For Packers
 - **Start**: Double-click `PackerTracker_Console.exe`
-- **Record**: Name + Order Number → "Record Order"
-- **View All**: Click "View Orders" → See complete order list
+- **Record**: Name + 6-digit Order Number → "Record Order"
+- **View/Filter/Search**: Click "View Orders" → Use search/filter controls
 - **Stop**: Close the console window
 
 ### For Administrators
 - **Install**: Copy executable to station
-- **Monitor**: Check `packer_data.txt` file
-- **Backup**: Copy data file regularly
+- **Monitor**: Check `packer_data.json` file
+- **Backup**: Use auto-backup or copy backup files from `backups/`
 - **Update**: Replace executable when needed
 
 ### File Locations
 - **App**: `PackerTracker_Console.exe`
-- **Data**: `packer_data.txt` (same folder)
-- **Backup**: Create copies with date in filename
-
----
-
-**Need help? Check the troubleshooting section or contact your IT support.** 
+- **Data**: `packer_data.json` (same folder)
+- **Backups**: `backups/` folder (auto-created) 
