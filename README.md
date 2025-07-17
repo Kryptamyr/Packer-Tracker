@@ -1,4 +1,4 @@
-# 📦 Packer Tracker v0.1.0
+# 📦 Packer Tracker v1.0.0
 
 A modern, user-friendly web application for tracking which packer completed which orders. Built with Python/Flask backend and clean HTML/CSS/JS frontend.
 
@@ -19,8 +19,8 @@ A modern, user-friendly web application for tracking which packer completed whic
 
 ### Core Functionality
 - ✅ **Record Orders**: Enter packer name and order number
-- 🔍 **Search Orders**: Find who packed a specific order
-- 💾 **Simple Storage**: Data saved to `packer_data.txt` (delimited format)
+- 📋 **View All Orders**: See complete list of all recorded orders with packer names, order numbers, and timestamps
+- 💾 **JSON Storage**: Data saved to `packer_data.json` (structured format)
 - 🔔 **Smart Notifications**: Success/error messages with auto-dismiss
 - 🚫 **Duplicate Prevention**: Can't record the same order twice
 
@@ -35,8 +35,9 @@ A modern, user-friendly web application for tracking which packer completed whic
 - 🏗️ **Clean Architecture**: Separated backend/frontend structure
 - 🚀 **Standalone Executable**: No installation required for end users
 - 🔒 **Local Only**: Runs on localhost (no network access required)
-- 📊 **Data Persistence**: Automatic data saving to text file
-- 🛠️ **Easy Maintenance**: Simple text-based data storage
+- 📊 **Data Persistence**: Automatic data saving to JSON file
+- 🛠️ **Easy Maintenance**: Structured JSON-based data storage
+- 🔒 **Thread-Safe**: Atomic file operations prevent data corruption
 
 ## 📁 Project Structure
 
@@ -58,7 +59,7 @@ packer_app/
 │   │       ├── index.css       # Main styles
 │   │       └── result.css      # Results page styles
 │   ├── index.html              # Main page
-│   ├── search.html             # Search page
+│   ├── orders.html             # View orders page
 │   └── result.html             # Results page
 ├── dist/                       # Distribution files
 │   ├── PackerTracker_Console.exe
@@ -103,117 +104,22 @@ python build_exe_console.py
 
 ## 📊 Data Format
 
-Data is stored in `packer_data.txt`:
-```
-packer_name|order_number|timestamp
+Data is now stored in `packer_data.json`:
+```json
+{
+  "John Smith": [
+    {"order": "ORD-12345", "timestamp": "2024-01-15T14:30:25"},
+    {"order": "ORD-12346", "timestamp": "2024-01-15T14:35:10"}
+  ],
+  "Jane Doe": [
+    {"order": "ORD-12347", "timestamp": "2024-01-15T14:40:15"}
+  ]
+}
 ```
 
-**Example:**
-```
-John Smith|ORD-12345|2024-01-15 14:30:25
-Jane Doe|ORD-12346|2024-01-15 14:35:10
-```
+**Each packer name appears only once, with a list of their orders and timestamps.**
 
 ## 🔧 Configuration
 
 ### Environment Variables
-- `FLASK_SECRET_KEY`: Secret key for sessions (default: auto-generated)
-- `DATA_FILE`: Path to data file (default: `packer_data.txt`)
-
-### Port Configuration
-- Default port: 5000
-- Change in `backend/startup.py` if needed
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-**Executable won't start:**
-- Check if port 5000 is available
-- Ensure antivirus isn't blocking the file
-- Try running as administrator
-
-**Browser doesn't open:**
-- Check default browser settings
-- Manually navigate to `http://localhost:5000`
-
-**Data not saving:**
-- Check folder write permissions
-- Ensure antivirus isn't blocking file creation
-
-**Import errors:**
-- Rebuild executable with `build.bat`
-- Check Python path configuration
-
-### Development Issues
-
-**Module not found:**
-- Ensure all dependencies installed
-- Check import paths in controllers
-
-**Template errors:**
-- Verify frontend folder structure
-- Check template folder configuration
-
-## 🔒 Security & Privacy
-
-### Data Security
-- ✅ **Local Storage**: All data stored locally
-- ✅ **No Network**: Application runs on localhost only
-- ✅ **No Authentication**: Suitable for trusted environments
-- ⚠️ **Plain Text**: Data stored in readable text format
-
-### Recommendations
-- Use on trusted computers only
-- Regular data backups recommended
-- Consider encryption for sensitive data
-
-## 📈 Future Enhancements
-
-### Potential Features
-- 📊 **Reports**: Export data to Excel/CSV
-- 👥 **User Management**: Multiple packer profiles
-- 📅 **Date Filtering**: Search by date ranges
-- 🔍 **Advanced Search**: Search by packer name
-- 📱 **Mobile App**: Native mobile application
-- ☁️ **Cloud Sync**: Multi-station synchronization
-
-### Technical Improvements
-- 🗄️ **Database**: SQLite/PostgreSQL for larger datasets
-- 🔐 **Authentication**: User login system
-- 📊 **Analytics**: Usage statistics and reports
-- 🎨 **Themes**: Customizable UI themes
-
-## 🤝 Contributing
-
-### Development Workflow
-1. Fork the repository
-2. Create feature branch
-3. Make changes
-4. Test thoroughly
-5. Submit pull request
-
-### Code Standards
-- Follow PEP 8 for Python code
-- Use meaningful variable names
-- Add comments for complex logic
-- Test all functionality before submitting
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 📞 Support
-
-### For Users
-- Check the DEPLOYMENT.md for user-specific guidance
-- Contact your system administrator for technical issues
-
-### For Developers
-- Review the code structure in `backend/` and `frontend/`
-- Check the build scripts for deployment options
-- Use the development setup for testing
-
----
-
-**Built with ❤️ for efficient order tracking** 
+- `

@@ -29,11 +29,10 @@ When you double-click the app:
 3. **Click "Record Order"**
 4. **See the green success message** - you're done!
 
-#### 🔍 Finding an Order
-1. **Click "Search Orders"** at the bottom
-2. **Enter the order number** you're looking for
-3. **Click "Search Order"**
-4. **See who packed it and when**
+#### 📋 Viewing All Orders
+1. **Click "View Orders"** at the bottom
+2. **See all recorded orders** in a table format
+3. **View packer names, order numbers, and timestamps** for all entries
 
 ### Tips for Packers
 - ✅ **Use your real name** - this helps track your work
@@ -235,7 +234,7 @@ findstr "2024-01-15" packer_data.txt
 ### For Packers
 - **Start**: Double-click `PackerTracker_Console.exe`
 - **Record**: Name + Order Number → "Record Order"
-- **Search**: Click "Search Orders" → Enter Order Number
+- **View All**: Click "View Orders" → See complete order list
 - **Stop**: Close the console window
 
 ### For Administrators

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packer Tracker - View Orders</title>
+    <link rel="stylesheet" href="resources/styles/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 View Orders</h1>
+            <p>All recorded orders and packers</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="orders-table-container">
+            {% if orders %}
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>👤 Packer Name</th>
+                            <th>📋 Order Number</th>
+                            <th>🕒 Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.packer_name }}</td>
+                            <td>{{ order.order_number }}</td>
+                            <td>{{ order.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-orders">
+                    <p>📭 No orders have been recorded yet.</p>
+                    <p>Start by recording your first order!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <a href="{{ url_for('index') }}" class="nav-link">🏠 Back to Home</a>
+    </div>
+</body>
+</html>

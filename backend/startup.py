@@ -44,25 +44,10 @@ def submit():
     else:
         return redirect(url_for('index'))
 
-@app.route('/search')
-def search():
-    return render_template('search.html')
-
-@app.route('/result', methods=['POST'])
-def result():
-    order_number = request.form.get('order_number', '').strip()
-    
-    # Check if order number is empty
-    if not order_number:
-        flash('Please enter an order number to search.', 'error')
-        return redirect(url_for('search'))
-    
-    # Search for the order
-    result_data = packer_controller.search_order(order_number)
-    
-    # Always render the result page, even if order is not found
-    # result_data will be None if order not found, which the template handles
-    return render_template('result.html', order_number=order_number, result=result_data)
+@app.route('/orders')
+def orders():
+    orders = packer_controller.get_all_orders()
+    return render_template('orders.html', orders=orders)
 
 if __name__ == '__main__':
     # Start browser in a separate thread

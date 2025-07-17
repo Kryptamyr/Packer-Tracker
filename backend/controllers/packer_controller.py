@@ -12,6 +12,19 @@ class PackerController:
     
     def __init__(self):
         self.db = PackerDatabase()
+        # Attempt migration from old format if needed
+        self._migrate_if_needed()
+    
+    def _migrate_if_needed(self):
+        """Attempt to migrate from old text format to new JSON format if needed"""
+        old_file = 'packer_data.txt'
+        if os.path.exists(old_file) and not os.path.exists(self.db.data_file):
+            print("🔄 Migrating from old text format to new JSON format...")
+            if self.db.migrate_from_txt(old_file):
+                print("✅ Migration completed successfully!")
+                print(f"📁 Old data backed up as {old_file}.backup")
+            else:
+                print("❌ Migration failed. Using new format with empty data.")
     
     def submit_order(self, packer_name, order_number):
         """Submit a new order with validation"""
@@ -63,3 +76,7 @@ class PackerController:
     def get_all_orders(self):
         """Get all orders"""
         return self.db.get_all_orders() 
+    
+    def get_packer_statistics(self):
+        """Get statistics for all packers"""
+        return self.db.get_packer_statistics() 
